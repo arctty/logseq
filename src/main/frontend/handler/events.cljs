@@ -281,10 +281,14 @@
         :class "ui__modal-enter"
         :on-click (fn []
                     (nfs/check-directory-permission! repo)
+                    (js/console.log repo "readymode")
+                    ;; (state/pub-event! [:graph/restored repo])
+                    (state/pub-event! [:graph/ready repo])
                     (close-fn)))])))
 
 (defmethod handle :modal/nfs-ask-permission []
   (when-let [repo (get-local-repo)]
+    ;; (nfs/check-directory-permission! repo)
     (state/set-modal! (ask-permission repo))))
 
 (defonce *query-properties (atom {}))
