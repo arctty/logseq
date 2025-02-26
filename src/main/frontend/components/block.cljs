@@ -382,8 +382,9 @@
 
     (when @src
       ;; NOTE(andelf): Under nfs context, src might be a bare blob:http://..../uuid URI without ext info
-      (let [ext (keyword (or (util/get-file-ext @src)
-                             (util/get-file-ext href)))
+      (let [src-ext (when-not (string/starts-with? @src "blob:") (util/get-file-ext @src))
+            href-ext (util/get-file-ext href)
+            ext (keyword (or src-ext href-ext))
             repo (state/get-current-repo)
             repo-dir (config/get-repo-dir repo)
             path (str repo-dir href)
